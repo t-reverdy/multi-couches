@@ -2,9 +2,12 @@ package fr.sdv.entites;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+import java.util.Set;
+
 @Entity
 @Table(name = "product")
-public class Product {
+public class Product implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,14 +20,15 @@ public class Product {
     @Column(name = "LABEL")
     private String label;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "TYPE")
     private ProdType type;
 
     @Column(name = "PRICE")
     private double price;
 
-    @ManyToMany(mappedBy = "product",cascade = CascadeType.ALL)
-    private PetStore petStore;
+    @ManyToMany(mappedBy = "products",cascade = CascadeType.ALL)
+    private Set<PetStore> petStore;
 
     public enum ProdType {
         FOOD, ACCESSORY, CLEANING
@@ -32,8 +36,7 @@ public class Product {
 
     public Product() {}
 
-    public Product(Integer id, String code, String label, ProdType type, double price) {
-        this.id = id;
+    public Product(String code, String label, ProdType type, double price) {
         this.code = code;
         this.label = label;
         this.type = type;
@@ -80,11 +83,11 @@ public class Product {
         this.price = price;
     }
 
-    public PetStore getPetStore() {
+    public Set<PetStore> getPetStore() {
         return petStore;
     }
 
-    public void setPetStore(PetStore petStore) {
+    public void setPetStore(Set<PetStore> petStore) {
         this.petStore = petStore;
     }
 

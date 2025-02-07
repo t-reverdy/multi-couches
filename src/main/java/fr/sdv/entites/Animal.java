@@ -2,22 +2,32 @@ package fr.sdv.entites;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
-public class Animal {
+@Table(name = "animal")
+@Inheritance(strategy = InheritanceType.JOINED)
+public class Animal implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     private Integer id;
+
+    @Column(name = "BIRTH")
     private LocalDate birth;
+
+    @Column(name = "COULEUR")
     private String couleur;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "PETSTORE_ID")
     private PetStore petStore;
 
     public Animal() {}
 
-    public Animal(Integer id, LocalDate birth, String couleur, PetStore petStore) {
-        this.id = id;
+    public Animal(LocalDate birth, String couleur, PetStore petStore) {
         this.birth = birth;
         this.couleur = couleur;
         this.petStore = petStore;

@@ -1,22 +1,36 @@
 package fr.sdv.entites;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.io.Serializable;
 
 @Entity
-public class Address {
+@Table(name = "address")
+public class Address implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     private Integer id;
+
+    @Column(name = "NUMBER")
     private String number;
+
+    @Column(name = "STREET")
     private String street;
+
+    @Column(name = "ZIP_CODE")
     private String zipcode;
+
+    @Column(name = "CITY")
     private String city;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private PetStore petStore;
 
     public Address() {}
 
-    public Address(Integer id, String number, String street, String zipcode, String city) {
-        this.id = id;
+    public Address(String number, String street, String zipcode, String city) {
         this.number = number;
         this.street = street;
         this.zipcode = zipcode;
@@ -61,6 +75,14 @@ public class Address {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public PetStore getPetStore() {
+        return petStore;
+    }
+
+    public void setPetStore(PetStore petStore) {
+        this.petStore = petStore;
     }
 
     @Override

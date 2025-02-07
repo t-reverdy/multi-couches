@@ -2,12 +2,13 @@ package fr.sdv.entites;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "pet_store")
-public class PetStore {
+public class PetStore implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +33,7 @@ public class PetStore {
         products = new HashSet<Product>();
     }
 
-    @OneToMany(mappedBy = "petstores")
+    @OneToMany(mappedBy = "petStore", cascade = CascadeType.ALL)
     private Set<Animal> animals;
     {
         animals = new HashSet<>();
@@ -40,8 +41,7 @@ public class PetStore {
 
     public PetStore() {}
 
-    public PetStore(Integer id, String name, String managerName, Address address) {
-        this.id = id;
+    public PetStore(String name, String managerName, Address address) {
         this.name = name;
         this.managerName = managerName;
         this.address = address;
